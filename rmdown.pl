@@ -9,6 +9,8 @@ use autodie qw/open/;
 #binmode (STDOUT, ':encoding(utf8)');
 $| = 1;
 
+my ($new, $path) = @ARGV;
+
 sub rmdown_to
 {
     my ($hash, $output) = @_;
@@ -44,6 +46,7 @@ sub rmdown_to
     
     open my $fh, '>', $output;
     print $fh $resp->content;
+    close $fh
 };
 
 my $id = shift or die "usage: rmdown [ id | rmdown.com/link.php?hash= ]";
@@ -61,7 +64,8 @@ else
     die "Invalid url: $id\n";
 }
 
-my $out = shift || "$id.torrent";
+# my $out = shift || "$id.torrent";
+my $out = join "",$path,"/",$id,".torrent";
 
 rmdown_to ($id, $out);
 print "$out saved.\n";
